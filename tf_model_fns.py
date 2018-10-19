@@ -7,11 +7,12 @@ learning_rate = 1e-3
 
 # Network Parameters
 n_classes = 2
-dropout_rate = 0.4
+dropout_rate = 0.75
 
 
 # used by estimator
 def cnn_model_fn(features, labels, mode):
+    import numpy as np
     """Model function for CNN."""
 
     # Input Layer
@@ -19,21 +20,22 @@ def cnn_model_fn(features, labels, mode):
 
     # Convolutional Layer #1
     conv1 = tf.layers.conv2d(
-        inputs=input_layer, filters=55, kernel_size=5,
-        padding="same", activation=tf.nn.relu)
+        inputs=input_layer, filters=32, kernel_size=5,
+        padding="same", activation=tf.nn.sigmoid)
 
     # Pooling Layer #1
     pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=2, strides=2)
 
     # Convolutional Layers #2 and Pooling Layer #2
     conv2 = tf.layers.conv2d(
-        inputs=pool1, filters=110, kernel_size=3,
+        inputs=pool1, filters=64, kernel_size=3,
         padding="same", activation=tf.nn.relu)
     pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=2, strides=2)
 
     # Dense Layer
     pool2_flat = tf.layers.flatten(pool2)
-    dense = tf.layers.dense(inputs=pool2_flat, units=1024, activation=tf.nn.relu)
+    dense = tf.layers.dense(inputs=pool2_flat, units=1024,
+                            activation=tf.nn.relu)
     dropout = tf.layers.dropout(
         inputs=dense, rate=dropout_rate,  # global parameter: dropout_rate
         training=(mode == tf.estimator.ModeKeys.TRAIN))
@@ -58,7 +60,7 @@ def cnn_model_fn(features, labels, mode):
 
     # Configure the Training Op (for TRAIN mode)
     if mode == tf.estimator.ModeKeys.TRAIN:
-        optimizer = tf.train.AdamOptimizer(
+        optimizer = tf.train.ProximalGradientDescentOptimizer(
             learning_rate=learning_rate)  # global parameter
         train_op = optimizer.minimize(loss=loss,
                                       global_step=tf.train.get_global_step())
@@ -72,4 +74,3 @@ def cnn_model_fn(features, labels, mode):
 
     return tf.estimator.EstimatorSpec(
         mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
-
