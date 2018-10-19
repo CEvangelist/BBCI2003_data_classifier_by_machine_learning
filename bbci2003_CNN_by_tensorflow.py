@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # standard package
-import os, sys
+import os
 # third-party package
 import tensorflow as tf
 import numpy as np
@@ -12,7 +12,7 @@ from tf_model_fns import cnn_model_fn
 SOURCE_ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # define train_steps
-train_steps = 8000
+train_steps = 20000
 
 # Application logic below
 
@@ -22,6 +22,8 @@ def main(unused_argv):
     # 316 epochs, 50 samples, 28 channels, 500ms per epoch
     data_x, data_y, x_min, x_max = read_train_data(
         SOURCE_ROOT_DIR)  # x_min, x_max not used
+    data_x = data_x.reshape(-1, 50, 28)
+    data_x = np.rollaxis(data_x, axis=2, start=1)
     train_data = np.asarray(data_x[:200], dtype=np.float32)
     train_labels = np.asarray(data_y[:200], dtype=np.int32)
     eval_data = np.asarray(data_x[200:], dtype=np.float32)
