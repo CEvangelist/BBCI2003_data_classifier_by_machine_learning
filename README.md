@@ -3,20 +3,31 @@
 
 provide estimated class labels (0 or 1) for every trial of the test data
 
-## Environment & package required
+## Environment & Package requirement
 
-### Environment
+#### Environment
 
-1. Windows10 x64
-2. Python 3.5.6
-3. Nvidia CUDNN v9.0 if tensorflow-gpu has been chosen
+* Windows10 x64
+* Python 3.5.6
+* Nvidia CUDNN v9.0 if tensorflow-gpu has been installed
 
-### packages
+#### Packages
 
-1. tensorflow or tensorflow-gpu V1.11 or above
-2. numpy
-3. pandas
+* tensorflow or tensorflow-gpu V1.11 or above
+* numpy
+* pandas
+* sklearn
 
 ## Data description
 
-see: [./inputData/desc.md](./inputData/desc.md)
+See: [desc.md](./inputData/desc.md)
+
+## Usage
+
+* If use sklearn model
+  1. Run bbci2003_MLP_by_sklearn.py
+  2. A csv file output to ./outputData/sp1s_aa_test_result_by_sklearn.csv
+* Else if use tensorflow
+  1. Run bbci2003_CNN_by_tensorflow.py to train model
+  2. Run tf_output_test_data_with_estimator.py to use model
+  3. A csv file output to ./outputData/sp1s_aa_test_result_by_tensorflow.csv
