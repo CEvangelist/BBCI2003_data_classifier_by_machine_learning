@@ -1,0 +1,10 @@
+
+# IDE ignore
+.vs/*
+.vscode/*
+.idea/*
+
+# self-defined ignore
+ignore/*
+TFModels/*
+__pycache__/*
