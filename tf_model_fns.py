@@ -34,7 +34,7 @@ def cnn_model_fn(features, labels, mode):
 
     # Dense Layer
     pool2_flat = tf.layers.flatten(pool2)
-    dense = tf.layers.dense(inputs=pool2_flat, units=1024,
+    dense = tf.layers.dense(inputs=pool2_flat, units=2048,
                             activation=tf.nn.relu)
     dropout = tf.layers.dropout(
         inputs=dense, rate=dropout_rate,  # global parameter: dropout_rate
