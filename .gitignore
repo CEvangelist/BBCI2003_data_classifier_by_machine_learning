@@ -8,3 +8,4 @@
 ignore/*
 TFModels/*
 __pycache__/*
+inputData/*.7z
