@@ -12,10 +12,10 @@ from tf_model_fns import cnn_model_fn
 SOURCE_ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # define train_steps
-train_steps = 20000
+train_steps = 8000
+
 
 # Application logic below
-
 def main(unused_argv):
 
     # Load training and eval data

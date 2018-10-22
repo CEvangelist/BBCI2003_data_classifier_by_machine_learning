@@ -3,7 +3,7 @@
 import tensorflow as tf
 
 # Model Parameters
-learning_rate = 1e-4
+learning_rate = 1e-3
 
 # Network Parameters
 n_classes = 2
@@ -76,11 +76,12 @@ def cnn_model_fn(features, labels, mode):
         mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
 
+# used by estimator
 def lstm_model_fn(features, labels, mode):
     """Model function for LSTM."""
 
     # Input Layer
-    input_layer = tf.reshape(features["x"], [-1, 28, 50])
+    input_layer = tf.reshape(features["x"], [-1, 50, 28])
 
     # create 2 LSTMCells
     rnn_layers = [tf.nn.rnn_cell.LSTMCell(size) for size in (128, 256)]
@@ -89,14 +90,14 @@ def lstm_model_fn(features, labels, mode):
     multi_rnn_cell = tf.nn.rnn_cell.MultiRNNCell(rnn_layers)
 
     # 'outputs' is a tensor of shape [batch_size, max_time, 256]
-    # 'state' is a N-tuple where N is the number of LSTMCells containinga
+    # 'state' is a N-tuple where N is the number of LSTMCells containing a
     # tf.contrib.rnn.LSTMStateTuple for each cell
     rnn_outputs, state = tf.nn.dynamic_rnn(cell=multi_rnn_cell,
                                            inputs=input_layer,
                                            dtype=tf.float32)
-    # Dense Layer
+    # # Dense Layer
     rnn_outputs_flat = tf.layers.flatten(rnn_outputs)
-    dense = tf.layers.dense(inputs=rnn_outputs_flat, units=2048,
+    dense = tf.layers.dense(inputs=rnn_outputs_flat, units=1024,
                             activation=tf.nn.relu)
     dropout = tf.layers.dropout(
         inputs=dense, rate=dropout_rate,  # global parameter: dropout_rate
