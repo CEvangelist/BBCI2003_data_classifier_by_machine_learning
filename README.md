@@ -28,6 +28,11 @@ See: [desc.md](./inputData/desc.md)
   1. Run bbci2003_MLP_by_sklearn.py
   2. A csv file output to ./outputData/sp1s_aa_test_result_by_sklearn.csv
 * Else if use tensorflow
-  1. Run bbci2003_CNN_by_tensorflow.py to train model
-  2. Run tf_output_test_data_with_estimator.py to use model
-  3. A csv file output to ./outputData/sp1s_aa_test_result_by_tensorflow.csv
+  1. CNN model selected:
+      1. Run bbci2003_CNN_by_tensorflow.py to train model
+      2. Run tf_output_test_data_with_estimator.py and select CNN model
+      3. A csv file output to ./outputData/sp1s_aa_test_result_by_tf_CNN.csv
+  2. LSTM model selected:
+      1. Run bbci2003_LSTM_by_tensorflow.py to train model
+      2. Run tf_output_test_data_with_estimator.py and select LSTM model
+      3. A csv file output to ./outputData/sp1s_aa_test_result_by_tf_LSTM.csv
