@@ -7,7 +7,7 @@ learning_rate = 1e-3
 
 # Network Parameters
 n_classes = 2
-dropout_rate = 0.4
+dropout_rate = 0.25
 
 
 def full_connect_model_fn(features, labels, mode):
@@ -16,10 +16,13 @@ def full_connect_model_fn(features, labels, mode):
     # Input Layer
     input_layer = tf.reshape(features["x"], [-1, 28, 50])
 
+    # Trimmed layer
+    trim = input_layer[:, :, :]
+
     # Dense Layer
-    flat = tf.layers.flatten(input_layer)
-    dense = tf.layers.dense(inputs=flat, units=2048,
-                            activation=tf.nn.relu)
+    flat = tf.layers.flatten(trim)
+    dense = tf.layers.dense(inputs=flat, units=1400,
+                            activation=None)
 
     dropout = tf.layers.dropout(
         inputs=dense, rate=dropout_rate,  # global parameter: dropout_rate

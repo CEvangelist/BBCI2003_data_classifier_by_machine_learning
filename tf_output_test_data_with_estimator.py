@@ -6,7 +6,7 @@ import pandas as pd
 import tensorflow as tf
 # module in this repo
 from np_train_data_100Hz import read_test_data
-from tf_model_fns import cnn_model_fn, lstm_model_fn
+from tf_model_fns import cnn_model_fn, lstm_model_fn, full_connect_model_fn
 
 SOURCE_ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -42,6 +42,14 @@ def main(unused_argv):
             "output_dir": os.path.join(
                 SOURCE_ROOT_DIR, "outputData",
                 "sp1s_aa_test_result_by_tf_CNN.csv")
+        },
+        "2": {
+            "model_fn": full_connect_model_fn,
+            "model_dir": os.path.join(SOURCE_ROOT_DIR,
+                                      "TFModels", "bbci_FullNN_model"),
+            "output_dir": os.path.join(
+                SOURCE_ROOT_DIR, "outputData",
+                "sp1s_aa_test_result_by_tf_FullNN.csv")
         },
     }
 
