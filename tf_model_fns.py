@@ -7,7 +7,7 @@ learning_rate = 1e-3
 
 # Network Parameters
 n_classes = 2
-dropout_rate = 0.25
+dropout_rate = 0.4
 
 
 def full_connect_model_fn(features, labels, mode):
@@ -70,26 +70,28 @@ def cnn_model_fn(features, labels, mode):
     """Model function for CNN."""
 
     # Input Layer
-    input_layer = tf.reshape(features["x"], [-1, 28, 50])
+    input_layer = tf.reshape(features["x"], [-1, 50, 28, 1])
+    # input_layer = input_layer[:, :, :, :]
 
     # Convolutional Layer #1
-    conv1 = tf.layers.conv1d(
-        inputs=input_layer, filters=32, kernel_size=5,
-        padding="same", activation=tf.nn.sigmoid)
+    conv1 = tf.layers.conv2d(
+        inputs=input_layer, filters=16, kernel_size=5,
+        padding="same", activation=tf.nn.relu)
 
     # Pooling Layer #1
-    pool1 = tf.layers.max_pooling1d(inputs=conv1, pool_size=2, strides=2)
+    pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=2, strides=2)
 
     # Convolutional Layers #2 and Pooling Layer #2
-    conv2 = tf.layers.conv1d(
-        inputs=pool1, filters=64, kernel_size=3,
+    conv2 = tf.layers.conv2d(
+        inputs=pool1, filters=32, kernel_size=3,
         padding="same", activation=tf.nn.relu)
-    pool2 = tf.layers.max_pooling1d(inputs=conv2, pool_size=2, strides=2)
+    pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=2, strides=2)
+    print(pool2.shape)
 
     # Dense Layer
     pool2_flat = tf.layers.flatten(pool2)
-    dense = tf.layers.dense(inputs=pool2_flat, units=2048,
-                            activation=tf.nn.relu)
+    dense = tf.layers.dense(inputs=pool2_flat, units=12 * 7 * 32,
+                            activation=tf.nn.sigmoid)
     dropout = tf.layers.dropout(
         inputs=dense, rate=dropout_rate,  # global parameter: dropout_rate
         training=(mode == tf.estimator.ModeKeys.TRAIN))
@@ -114,7 +116,7 @@ def cnn_model_fn(features, labels, mode):
 
     # Configure the Training Op (for TRAIN mode)
     if mode == tf.estimator.ModeKeys.TRAIN:
-        optimizer = tf.train.GradientDescentOptimizer(
+        optimizer = tf.train.AdamOptimizer(
             learning_rate=learning_rate,  # global parameter
         )
         train_op = optimizer.minimize(loss=loss,
