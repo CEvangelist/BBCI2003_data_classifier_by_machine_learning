@@ -7,12 +7,15 @@ import tensorflow as tf
 import numpy as np
 # module in this repo
 from np_train_data_100Hz import read_train_data
-from tf_model_fns import cnn_model_fn
+from tf_model_fns import cnn_model_fn, H_PARAMS as h_params
 
 SOURCE_ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 
+tf.logging.set_verbosity(tf.logging.DEBUG)
 # define train_steps
 train_steps = 4000
+# DEBUG Hyper-parameters
+tf.logging.debug(h_params.__doc__)
 
 
 # Application logic below
@@ -33,7 +36,7 @@ def main(unused_argv):
     model_dir = os.path.join(SOURCE_ROOT_DIR,
                              "TFModels", "bbci_convnet_model")
     bbci_classifier = tf.estimator.Estimator(
-        model_fn=cnn_model_fn, model_dir=model_dir)
+        model_fn=cnn_model_fn, model_dir=model_dir, params=h_params)
 
     # Set up logging for predictions
     tensors_to_log = {"probabilities": "softmax_tensor"}
@@ -44,7 +47,7 @@ def main(unused_argv):
     train_input_fn = tf.estimator.inputs.numpy_input_fn(
         x={"x": train_data},
         y=train_labels,
-        batch_size=100,
+        batch_size=h_params.batch_size,
         num_epochs=None,
         shuffle=True)
     bbci_classifier.train(
@@ -63,5 +66,4 @@ def main(unused_argv):
 
 
 if __name__ == "__main__":
-    tf.logging.set_verbosity(tf.logging.INFO)
     tf.app.run()

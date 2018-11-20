@@ -7,12 +7,15 @@ import tensorflow as tf
 import numpy as np
 # module in this repo
 from np_train_data_100Hz import read_train_data
-from tf_model_fns import full_connect_model_fn
+from tf_model_fns import full_connect_model_fn, H_PARAMS as h_params
 
 SOURCE_ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 
+tf.logging.set_verbosity(tf.logging.INFO)
 # define train_steps
 train_steps = 4000
+# DEBUG Hyper-parameters
+tf.logging.debug(h_params.__doc__)
 
 
 # Application logic below
@@ -33,7 +36,7 @@ def main(unused_argv):
     model_dir = os.path.join(SOURCE_ROOT_DIR,
                              "TFModels", "bbci_FullNN_model")
     bbci_classifier = tf.estimator.Estimator(
-        model_fn=full_connect_model_fn, model_dir=model_dir)
+        model_fn=full_connect_model_fn, model_dir=model_dir, params=h_params)
 
     # Set up logging for predictions
     tensors_to_log = {"probabilities": "softmax_tensor"}
@@ -44,7 +47,7 @@ def main(unused_argv):
     train_input_fn = tf.estimator.inputs.numpy_input_fn(
         x={"x": train_data},
         y=train_labels,
-        batch_size=100,
+        batch_size=h_params.batch_size,
         num_epochs=None,
         shuffle=True)
     bbci_classifier.train(
@@ -59,9 +62,8 @@ def main(unused_argv):
         num_epochs=1,
         shuffle=False)
     eval_results = bbci_classifier.evaluate(input_fn=eval_input_fn)
-    print(eval_results)
+    tf.logging.info("eval_results:\n%s", eval_results)
 
 
 if __name__ == "__main__":
-    tf.logging.set_verbosity(tf.logging.INFO)
     tf.app.run()

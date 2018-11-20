@@ -6,7 +6,8 @@ import pandas as pd
 import tensorflow as tf
 # module in this repo
 from np_train_data_100Hz import read_test_data
-from tf_model_fns import cnn_model_fn, lstm_model_fn, full_connect_model_fn
+from tf_model_fns import (cnn_model_fn, lstm_model_fn,
+                          full_connect_model_fn, H_PARAMS as h_params)
 
 SOURCE_ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -65,7 +66,8 @@ def main(unused_argv):
     selected_fn = model_fns[selection]
 
     estimator = tf.estimator.Estimator(model_fn=selected_fn["model_fn"],
-                                       model_dir=selected_fn["model_dir"])
+                                       model_dir=selected_fn["model_dir"],
+                                       params=h_params)
 
     predict_input_fn = tf.estimator.inputs.numpy_input_fn(
         x={"x": test_data_x},
