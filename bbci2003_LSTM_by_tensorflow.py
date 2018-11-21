@@ -12,10 +12,10 @@ from tf_model_fns import lstm_model_fn, H_PARAMS as h_params
 SOURCE_ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 tf.logging.set_verbosity(tf.logging.DEBUG)
-# define train_steps
-train_steps = 7000
 # DEBUG Hyper-parameters
-tf.logging.debug(h_params.__doc__)
+h_params.train_steps = 4000
+tf.logging.debug(["%s = %s" % (x, y) for x, y in vars(h_params).items()
+                  if '__' not in x])
 
 
 # Application logic below
@@ -51,7 +51,7 @@ def main(unused_argv):
         shuffle=True)
     bbci_classifier.train(
         input_fn=train_input_fn,
-        steps=train_steps,  # global parameter
+        steps=h_params.train_steps,  # global parameter
         hooks=[logging_hook])
 
     # Evaluate the model and print results

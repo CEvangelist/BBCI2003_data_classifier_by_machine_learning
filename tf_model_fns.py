@@ -10,14 +10,16 @@ class H_PARAMS:
     learning_rate = 1e-3
     dropout_rate = 0.4
     n_classes = 2
+    train_steps = 4000
 
-    __doc__ = """
-    hyper parameters: 
+    __doc__ += """
+    Default Hyper-parameters: 
         batch_size = {0}
         learning_rate = {1}
         dropout_rate = {2}
         n_classes = {3}
-    """.format(batch_size, learning_rate, dropout_rate, n_classes)
+        train_steps = {4}
+    """.format(batch_size, learning_rate, dropout_rate, n_classes, train_steps)
 
 
 
@@ -36,12 +38,12 @@ def full_connect_model_fn(features, labels, mode, params: H_PARAMS):
                             activation=None)
 
     dropout = tf.layers.dropout(
-        inputs=dense, rate=params.dropout_rate,  # global parameter: dropout_rate
+        inputs=dense, rate=params.dropout_rate,
         training=(mode == tf.estimator.ModeKeys.TRAIN))
 
     # Logits Layer
     logits = tf.layers.dense(inputs=dropout,
-                             units=params.n_classes)  # global parameter, 2 classes
+                             units=params.n_classes)
 
     predictions = {
         # Generate predictions (for PREDICT and EVAL mode)
@@ -60,7 +62,7 @@ def full_connect_model_fn(features, labels, mode, params: H_PARAMS):
     # Configure the Training Op (for TRAIN mode)
     if mode == tf.estimator.ModeKeys.TRAIN:
         optimizer = tf.train.GradientDescentOptimizer(
-            learning_rate=params.learning_rate,  # global parameter
+            learning_rate=params.learning_rate,
         )
         train_op = optimizer.minimize(loss=loss,
                                       global_step=tf.train.get_global_step())
@@ -104,12 +106,12 @@ def cnn_model_fn(features, labels, mode, params: H_PARAMS):
     dense = tf.layers.dense(inputs=pool2_flat, units=12 * 7 * 32,
                             activation=tf.nn.sigmoid)
     dropout = tf.layers.dropout(
-        inputs=dense, rate=params.dropout_rate,  # global parameter: dropout_rate
+        inputs=dense, rate=params.dropout_rate,
         training=(mode == tf.estimator.ModeKeys.TRAIN))
 
     # Logits Layer
     logits = tf.layers.dense(inputs=dropout,
-                             units=params.n_classes)  # global parameter, 2 classes
+                             units=params.n_classes)
 
     predictions = {
         # Generate predictions (for PREDICT and EVAL mode)
@@ -128,7 +130,7 @@ def cnn_model_fn(features, labels, mode, params: H_PARAMS):
     # Configure the Training Op (for TRAIN mode)
     if mode == tf.estimator.ModeKeys.TRAIN:
         optimizer = tf.train.AdamOptimizer(
-            learning_rate=params.learning_rate,  # global parameter
+            learning_rate=params.learning_rate,
         )
         train_op = optimizer.minimize(loss=loss,
                                       global_step=tf.train.get_global_step())
@@ -168,12 +170,12 @@ def lstm_model_fn(features, labels, mode, params: H_PARAMS):
     dense = tf.layers.dense(inputs=rnn_outputs_flat, units=1024,
                             activation=tf.nn.relu)
     dropout = tf.layers.dropout(
-        inputs=dense, rate=params.dropout_rate,  # global parameter: dropout_rate
+        inputs=dense, rate=params.dropout_rate,
         training=(mode == tf.estimator.ModeKeys.TRAIN))
 
     # Logits Layer
     logits = tf.layers.dense(inputs=dropout,
-                             units=params.n_classes)  # global parameter, 2 classes
+                             units=params.n_classes)
 
     predictions = {
         # Generate predictions (for PREDICT and EVAL mode)
@@ -192,7 +194,7 @@ def lstm_model_fn(features, labels, mode, params: H_PARAMS):
     # Configure the Training Op (for TRAIN mode)
     if mode == tf.estimator.ModeKeys.TRAIN:
         optimizer = tf.train.GradientDescentOptimizer(
-            learning_rate=params.learning_rate,  # global parameter
+            learning_rate=params.learning_rate,
         )
         train_op = optimizer.minimize(loss=loss,
                                       global_step=tf.train.get_global_step())

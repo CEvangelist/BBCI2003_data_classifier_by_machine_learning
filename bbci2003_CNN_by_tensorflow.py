@@ -12,15 +12,15 @@ from tf_model_fns import cnn_model_fn, H_PARAMS as h_params
 SOURCE_ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 tf.logging.set_verbosity(tf.logging.DEBUG)
-# define train_steps
-train_steps = 4000
-# DEBUG Hyper-parameters
-tf.logging.debug(h_params.__doc__)
+
+# make and DEBUG Hyper-parameters
+h_params.train_steps = 4000
+tf.logging.debug(["%s = %s" % (x, y) for x, y in vars(h_params).items()
+                  if '__' not in x])
 
 
 # Application logic below
 def main(unused_argv):
-
     # Load training and eval data
     # 316 epochs, 50 samples, 28 channels, 500ms per epoch
     data_x, data_y, x_min, x_max = read_train_data(
@@ -52,7 +52,7 @@ def main(unused_argv):
         shuffle=True)
     bbci_classifier.train(
         input_fn=train_input_fn,
-        steps=train_steps,  # global parameter
+        steps=h_params.train_steps,
         hooks=[logging_hook])
 
     # Evaluate the model and print results
