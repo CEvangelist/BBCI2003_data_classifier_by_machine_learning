@@ -5,6 +5,9 @@ import tensorflow as tf
 
 # Hyper Parameters
 class H_PARAMS:
+    """
+    Hyper-parameters to pass into networks
+    """
 
     batch_size = 100
     learning_rate = 1e-3

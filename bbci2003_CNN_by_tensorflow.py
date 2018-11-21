@@ -62,7 +62,7 @@ def main(unused_argv):
         num_epochs=1,
         shuffle=False)
     eval_results = bbci_classifier.evaluate(input_fn=eval_input_fn)
-    print(eval_results)
+    tf.logging.info(eval_results)
 
 
 if __name__ == "__main__":

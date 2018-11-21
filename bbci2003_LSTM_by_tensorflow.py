@@ -51,7 +51,7 @@ def main(unused_argv):
         shuffle=True)
     bbci_classifier.train(
         input_fn=train_input_fn,
-        steps=h_params.train_steps,  # global parameter
+        steps=h_params.train_steps,
         hooks=[logging_hook])
 
     # Evaluate the model and print results
@@ -61,7 +61,7 @@ def main(unused_argv):
         num_epochs=1,
         shuffle=False)
     eval_results = bbci_classifier.evaluate(input_fn=eval_input_fn)
-    print(eval_results)
+    tf.logging.info(eval_results)
 
 
 if __name__ == "__main__":

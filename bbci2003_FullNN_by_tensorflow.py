@@ -52,7 +52,7 @@ def main(unused_argv):
         shuffle=True)
     bbci_classifier.train(
         input_fn=train_input_fn,
-        steps=h_params.train_steps,  # global parameter
+        steps=h_params.train_steps,
         hooks=[logging_hook])
 
     # Evaluate the model and print results
