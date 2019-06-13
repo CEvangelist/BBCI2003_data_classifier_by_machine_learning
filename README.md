@@ -12,7 +12,7 @@ provide estimated class labels (0 or 1) for every trial of the test data
 
 ### Packages
 
-* tensorflow or tensorflow-gpu V1.11 or above
+* tensorflow or tensorflow-gpu V1.11 or later
 * numpy
 * pandas
 * sklearn
