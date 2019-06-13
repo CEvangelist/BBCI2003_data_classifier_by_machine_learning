@@ -15,7 +15,7 @@ Data are provided in the original 1000 Hz sampling and in a version downsampled 
 
 1. **Matlab** format (*.mat) containing variables: clab: electrode labels, x_train: training trials (time x channels x trials), y_train: corresponding labels (0: left, 1: right), x_test: test trials (time x channels x trials)
 
-2. zipped **ASC II** format (*.txt.zip). Each of those files contains a 2-D matrix where each row (line) contains the data of one trial, beginning with all samples of the first channel. Channels are in the following order: (F3, F1, Fz, F2, F4, FC5, FC3, FC1, FCz, FC2, FC4, FC6, C5, C3, C1, Cz, C2, C4, C6, CP5, CP3, CP1, CPz, CP2, CP4, CP6, O1, O2). In the files containing training data the first entry in each row indicates the class (0: left, 1: right). In the 1000 Hz version trials consist of 500 samples per channel and in the 100 Hz version they consist of 50 samples.
+2. zipped **ASCII** format (*.txt.zip). Each of those files contains a 2-D matrix where each row (line) contains the data of one trial, beginning with all samples of the first channel. Channels are in the following order: (F3, F1, Fz, F2, F4, FC5, FC3, FC1, FCz, FC2, FC4, FC6, C5, C3, C1, Cz, C2, C4, C6, CP5, CP3, CP1, CPz, CP2, CP4, CP6, O1, O2). In the files containing training data the first entry in each row indicates the class (0: left, 1: right). In the 1000 Hz version trials consist of 500 samples per channel and in the 100 Hz version they consist of 50 samples.
 
 ## Requirements and Evaluation
 
